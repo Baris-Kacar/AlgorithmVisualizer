@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Koordinatensystem</title>
+	
+</head>
+<body>
+	
+	<label for="chooseAlgorithm">Algorithmus auswählen</label>
+	<br>
+	<select name="chooseAlgorithm" id="chooseAlgorithm">
+		<option value="1">DFS</option>
+		<option value="2">BFS</option>
+		<option value="3">A*</option>
+	</select>
+
+	<br><br>
+	<div>
+		<p>LEFT CLICK TO CHOOSE FIELDS</p>
+		<p>RIGHT CLICK TO DELETE CHOOSEN FIELDS</p>
+		<p>GREEN: START NODE</p>
+		<p>RED: TARGET NODE</p>
+		<p>WHITE: UNVISITED NODE</p>
+		<p>BLACK: WALL NODE</p>
+		<p>YELLOW: SHORTEST-PATH-NODE </p>
+	</div>
+
+	<div>
+		<p>
+			<b>ALAAAAAAAAAAAAAAARMMMMMMMMMMMMMM!!!!
+			<br>
+			Es war ein sonniger Tag in der Stadt, als plötzlich ein Notruf einging. Ein Haus stand in Flammen und die Feuerwehr musste schnell handeln, um Leben zu retten und das Feuer zu löschen. Die Feuerwehrleute eilten in ihre Fahrzeuge und starteten ihre Motoren, aber welcher Weg war der schnellste und sicherste?
+			Die Feuerwehr setzte einen Algorithmus ein, um den besten Weg zum brennenden Haus zu finden. Sie hatten verschiedene Algorithmen zur Auswahl, aber welcher war der beste? Können Sie den Algorithmus auswählen, der der Feuerwehr helfen wird, das Haus so schnell und sicher wie möglich zu erreichen?
+			</b>
+		</p>
+	</div>
+
+	<div>
+		<label for="resetBtn">Options:</label>
+		<button id="resetBtn" onclick="c.resetCanvas()" name="resetBtn" type="button" > Reset Graph</button>
+		<label>COLORS: </label>
+		<button id="red" name="red" onclick="c.setColor(1)">RED</button>
+		<button id="black" name="black" onclick="c.setColor(2)">BLACK</button>
+		<button id="green" name="green" onclick="c.setColor(3)">GREEN</button>
+		<button id="green" name="green" onclick="c.setColor(4)">WHITE</button>
+		<button id="start" name="start" >START</button>
+		<br>
+		<br>
+		<label for="countOfRectangles">Anzahl Kästchen:</label> 
+		<input id="countOfRectangles" name="countOfRectangles" type="range"> 
+		
+
+	</div>
+
+	<br>
+
+	<canvas id="canvas" width="2000" height="1000" style="border:1px solid black;"></canvas>
+
+	<script src="algorithms.js"></script>
+</body>
+</html>
