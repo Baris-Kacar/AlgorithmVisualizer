@@ -5,6 +5,7 @@ let YELLOW = "yellow"
 let RED = "red"
 let GREEN = "green"
 
+let SPEED = 200
 
 /**
  * Nächste aufgabe wenn ein feld schon bereits grün oder rot ist soll ich es nicht mit schwarz übermalen können!
@@ -35,7 +36,6 @@ class Canvas{
         for(let x = 0;x <= this.canvas.width; x += this.stepX ){
             this.ctx.moveTo(x,0)
             this.ctx.lineTo(x,this.canvas.height)
-        
         }
         for(let y = 0;y <= this.canvas.height; y += this.stepY ){
             this.ctx.moveTo(0,y)
@@ -160,12 +160,12 @@ class Canvas{
         let xValOfTarget
         if(this.start != undefined){
             xValOfStart = this.getStart().get("x")
-            yValOfTarget = this.getStart().get("y")
+            yValOfStart = this.getStart().get("y")
         }
-
+    
         if(this.target != undefined){
-            yValOfStart = this.getTarget().get("y")
             xValOfTarget = this.getTarget().get("x")
+            yValOfTarget = this.getTarget().get("y")
         }
     
         if(x == xValOfStart && y == yValOfStart){
@@ -175,7 +175,7 @@ class Canvas{
         {
             isTargetOrStart = true 
         }
-
+    
         return isTargetOrStart
     }
 
@@ -297,7 +297,7 @@ class MouseEvents {
             const map = this.obj.getCoordinates(e)
             const x = map.get("x")
             const y = map.get("y")
-            console.log(`x: ${x}, y: ${y}`)
+            //console.log(`x: ${x}, y: ${y}`)
             this.obj.resetStart(x,y)
             this.obj.resetTarget(x,y)
             //CHECKS IF START AND TARGET IS ALREADY SETTET
@@ -357,12 +357,14 @@ class Edge{
 }
 
 class Graph{
-    constructor(start, target){
+    constructor(target){
         this.xAchse = c.canvas.width / RECTWIDTH
         this.yAchse = c.canvas.height / RECTHEIGHT
         this.adjacentMatrix = []
         this.target = target
         this.createAdjacentMatrix()
+        this.visited = new Set()
+        this.stack = []
     }
     createAdjacentMatrix(){
         
@@ -372,34 +374,37 @@ class Graph{
                 let map = new Map()
                 let node = new Node(x,y)
                 
-                let currCoordinates = new Map()
-                currCoordinates.set("x",x)
-                currCoordinates.set("y",y)
+                let currCoordinates = new Node(x,y)
+                
                 let cost = this.euclideanDistance(currCoordinates)
                 this.setAdjacent(x,y,node)
                 
-
                 map.set("node",node)
                 map.set("cost",cost) 
                 row.push(map)
             }
             this.adjacentMatrix.push(row)
+            
         }
+        //console.log(this.adjacentMatrix)
     }
-    euclideanDistance(position){
-        const xPosition = position.get("x")
-        const yPosition = position.get("y")
-        const xTarget = this.target.get("x")
-        const yTarget = this.target.get("y")
+    euclideanDistance(node){
+        const xPosition = node.x
+        const yPosition = node.y
+        const xTarget = this.target.x
+        const yTarget = this.target.y
         const dx = xTarget - xPosition
         const dy = yTarget - yPosition
         return Math.sqrt(dx*dx + dy*dy)
     }
+    getNodeWithMap(position){
+        return this.getNode(position.get("x"),position.get("y"))
+    }
     getNode(x,y){
-        return this.adjacentMatrix[x][y].get("node")
+        return this.adjacentMatrix[y][x].get("node")
     }
     getCost(x,y){
-        return this.adjacentMatrix[x][y].get("cost")
+        return this.adjacentMatrix[y][x].get("cost")
     }
     getAdjacent(x,y){
         return this.getNode(x,y).adjacent
@@ -418,59 +423,87 @@ class Graph{
         const oben = [x,(y-1)]
         const unten =[x,(y+1)]       
         adjacentNode.push(rechts)
-        adjacentNode.push(diagonalUnderRight)
-        adjacentNode.push(diagonalAboveLeft)
+        //adjacentNode.push(diagonalUnderRight)
+        //adjacentNode.push(diagonalAboveLeft)
         adjacentNode.push(links)
-        adjacentNode.push(diagonalUnderLeft)
-        adjacentNode.push(diagonalAboveRight)
         adjacentNode.push(oben)
         adjacentNode.push(unten)
         let val = adjacentNode.filter(val => val[0] >= 0 && val[0] < this.xAchse && val[1] >= 0 && val[1] < this.yAchse)    
         
-        let start  = new Map()
-        start.set("x",x)
-        start.set("y",y)
-       
+        let start  = new Node(x,y)
+
         let edgeList = []
         val.forEach(indexVal => {
-            let edge = new Edge()
-            let end = new Map()   
-            end.set("x", indexVal[0])
-            end.set("y", indexVal[1])
-            edge.end = end
-            edge.start = start  
-            edge.cost = this.euclideanDistance(end,this.target)
+            let end = new Node(indexVal[0],indexVal[1])   
+            let edge = new Edge(start,end, this.euclideanDistance(end,this.target))
             edgeList.push(edge)
         })
         node.adjacent = edgeList
+        //console.log(node.adjacent)
+    }
+
+    checkWall(node){
+        let walls = c.walls
+        for(let i = 0;i < walls.length;i++){
+            let check = walls[i]
+            if(check.x == node.x && check.y == node.y){
+                return true
+            }
+        }
+        return false
+    }
+
+    sleep(ms){
+        return new Promise(resolve => setTimeout(resolve,ms))
+    }
+
+    async printAlgorithm(path,target){
+        for (let i = 1; i < path.length; i++) {
+            const node = path[i]      
+            c.changeRectangleColor(path[i].x, path[i].y, ORANGE)
+            c.loadImage(node.x,node.y,"img/firetruck.png")
+            if(i-1 != 0){
+                c.changeRectangleColor(path[i-1].x, path[i-1].y,ORANGE)
+            }
+            else{
+                c.changeRectangleColor(path[i-1].x, path[i-1].y,GREEN)
+            }
+    
+            await this.sleep(SPEED)
+        }
+        c.changeRectangleColor(target.x,target.y,RED)
+        c.loadImage(target.x,target.y,"img/home.png")
+    }
+
+    dfs(start, target, graph) {
+        if (start.x == target.x && start.y == target.y) {
+            return [];
+        }
+        let startId = start.x + "_" + start.y
+        this.visited.add(startId);
+        const adjacent = this.getAdjacent(start.x, start.y);
+        for (let i = 0; i < adjacent.length; i++) {
+            let neighbour = adjacent[i]
+            let neighbourId = neighbour.end.x +"_"+neighbour.end.y
+            if (!this.visited.has(neighbourId) && !this.checkWall(neighbour.end)) {
+                let path = this.dfs(neighbour.end, target, graph, this.visited);
+                if (path != null) {
+                    return [start].concat(path);
+                }
+            }
+        }
+        return null;
     }
 }
 
-
-
-
-
 const c = new Canvas(RECTWIDTH, RECTHEIGHT);
 c.draw()
-
-document.getElementById("start").addEventListener("click", function(){
-    let target = c.getTarget()
-    const g = new Graph(target)
-    //console.table(g.adjacentMatrix)
-    console.log(g.getAdjacent(0,0))
-    
-})
-
-
-//console.table(g.adjacentMatrix)
-
-
-//console.table(g.adjacentMatrix)
-
-// Pass a valid target parameter to createAdjacentMatrix
-
-
-
-
-// übergebe canvas obj
+var g = undefined
 t = new MouseEvents(c)
+document.getElementById("start").addEventListener("click", function(){
+    let targetNode = new Node(c.getTarget().get("x"),c.getTarget().get("y"))
+    let startNode = new  Node(c.getStart().get("x"),c.getStart().get("y"))
+    g = new Graph(targetNode)
+    let path = g.dfs(startNode,targetNode,g)
+    g.printAlgorithm(path,targetNode)
+})
