@@ -3,60 +3,111 @@
 <head>
 	<meta charset="utf-8">
 	<title>Koordinatensystem</title>
-	
+	<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body >
+	<div class="container-fluid bg-gray-800">
+		<nav>
+		  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="flex items-center justify-between h-16">
+			  <div class="flex items-center">
+				<div class="flex-shrink-0">
+				  <a class="text-white">ALGORITHM VISUALIZER</a>
+				</div>
+				<div class="hidden md:block">
+				  <div class="ml-10 flex items-baseline space-x-4">
+					<a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
+					  <select name="chooseAlgorithm" class="text-white bg-gray-800" id="chooseAlgorithm" class="text-white">
+						<option value="0">ALGORITHMUS WÄHLEN ... </option>
+						<option value="1">DFS</option>
+						<option value="2">BFS</option>
+						<option value="3">UCS</option>
+						<option value="4">A*</option>
+					  </select>
+					</a>
+	  
+					<a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"></a>
+	  
+				  </div>
+				</div>
+			  </div>
+			  <div class="-mr-2 flex md:hidden">
+				<!-- Hier könnte man den Mobile Menu Button platzieren -->
+			  </div>
+			</div>
+		  </div>
+		</nav>
+	  </div>
 	
-	<label for="chooseAlgorithm">Algorithmus auswählen</label>
-	<br>
-	<select name="chooseAlgorithm" id="chooseAlgorithm">
-		<option value="1">DFS</option>
-		<option value="2">BFS</option>
-		<option value="3">A*</option>
-	</select>
-
 	<br><br>
-	<div>
-		<p>LEFT CLICK TO CHOOSE FIELDS</p>
-		<p>RIGHT CLICK TO DELETE CHOOSEN FIELDS</p>
-		<p>GREEN: START NODE</p>
-		<p>RED: TARGET NODE</p>
-		<p>WHITE: UNVISITED NODE</p>
-		<p>BLACK: WALL NODE</p>
-		<p>YELLOW: SHORTEST-PATH-NODE </p>
-	</div>
 
-	<div>
-		<p>
-			<b>ALAAAAAAAAAAAAAAARMMMMMMMMMMMMMM!!!!
-			<br>
-			Es war ein sonniger Tag in der Stadt, als plötzlich ein Notruf einging. Ein Haus stand in Flammen und die Feuerwehr musste schnell handeln, um Leben zu retten und das Feuer zu löschen. Die Feuerwehrleute eilten in ihre Fahrzeuge und starteten ihre Motoren, aber welcher Weg war der schnellste und sicherste?
-			Die Feuerwehr setzte einen Algorithmus ein, um den besten Weg zum brennenden Haus zu finden. Sie hatten verschiedene Algorithmen zur Auswahl, aber welcher war der beste? Können Sie den Algorithmus auswählen, der der Feuerwehr helfen wird, das Haus so schnell und sicher wie möglich zu erreichen?
-			</b>
+	<div class="bg-gray-800 px-8 py-6 rounded-lg shadow-md mx-5 text-white">
+		<p class="text-lg font-bold mb-4">
+			ALAAAAAAAAAAAAAAARMMMMMMMMMMMMMM!!!!
 		</p>
+		<p class="mb-4">
+			Es war ein sonniger Tag in der Stadt, als plötzlich ein Notruf einging. Ein Haus stand in Flammen und die Feuerwehr musste schnell handeln, um Leben zu retten und das Feuer zu löschen. Die Feuerwehrleute eilten in ihre Fahrzeuge und starteten ihre Motoren, aber welcher Weg war der schnellste und sicherste?
+		</p>
+		<p class="mb-4">
+			Die Feuerwehr setzte einen Algorithmus ein, um den besten Weg zum brennenden Haus zu finden. Sie hatten verschiedene Algorithmen zur Auswahl, aber welcher war der beste? Können Sie den Algorithmus auswählen, der der Feuerwehr helfen wird, das Haus so schnell und sicher wie möglich zu erreichen?
+		</p>
+		<p class="font-bold">
+			Wählen Sie den richtigen Algorithmus, um die Feuerwehr dabei zu unterstützen, das brennende Haus so schnell wie möglich zu erreichen und Leben zu retten:
+		</p>
+		<button class="text-blue-500 hover:text-blue-700" id="toggleBtn">
+			Directions anzeigen
+		</button>
+		<div class="hidden" id="toggleDiv">
+			<div class="bg-gray-800  px-8 py-6 rounded-lg shadow-md">
+				<h2 class="text-xl font-bold mb-2">Field Selection</h2>
+				<ul class="list-disc pl-5">
+					<li>Choose fields by left-clicking</li>
+					<li>Delete chosen fields by right-clicking</li>
+					<li class="text-green-600 font-medium">Green: Start Node</li>
+					<li class="text-red-600 font-medium">Red: Target Node</li>
+					<li class="text-white font-medium">White: Unvisited Node</li>
+					<li class="text-black font-medium">Black: Wall Node</li>
+					<li class="text-yellow-600 font-medium">Yellow: Shortest Path Node</li>
+				</ul>
+			</div>
+		</div>
 	</div>
 
-	<div>
-		<label for="resetBtn">Options:</label>
-		<button id="resetBtn" onclick="c.resetCanvas()" name="resetBtn" type="button" > Reset Graph</button>
-		<label>COLORS: </label>
-		<button id="red" name="red" onclick="c.setColor(1)">RED</button>
-		<button id="black" name="black" onclick="c.setColor(2)">BLACK</button>
-		<button id="green" name="green" onclick="c.setColor(3)">GREEN</button>
-		<button id="green" name="green" onclick="c.setColor(4)">WHITE</button>
-		<button id="start" name="start" >START</button>
-		<br>
-		<br>
-		<label for="countOfRectangles">Anzahl Kästchen:</label> 
-		<input id="countOfRectangles" name="countOfRectangles" type="range"> 
+	<div class="bg-gray-800 text-white px-8 py-6 rounded-lg shadow-md m-5">
+		<label for="resetBtn" class="mr-2 font-bold">Options:</label>
+		<button id="resetBtn" onclick="c.resetCanvas()" name="resetBtn" type="button" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Reset Graph</button>
+		<label for="colors" class="ml-4 mr-2 font-bold">COLORS:</label>
+		<div id="colors" class="inline-flex space-x-2">
+		  <button id="red" name="red" onclick="c.setColor(1)" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">RED</button>
+		  <button id="black" name="black" onclick="c.setColor(2)" class="px-4 py-2 bg-black text-white font-bold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">BLACK</button>
+		  <button id="green" name="green" onclick="c.setColor(3)" class="px-4 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">GREEN</button>
+		  <button id="white" name="white" onclick="c.setColor(4)" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">WHITE</button>
+		</div>
+		<button id="start" name="start" class="ml-4 px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">START</button>
+		<br class="my-4">
 		
-
-	</div>
-
+		
+	  </div>
 	<br>
-
-	<canvas id="canvas" width="2000" height="1000" style="border:1px solid black;"></canvas>
-
+	<div class="flex items-center justify-center">
+		<canvas id="canvas" width="1000" height="1000" style="border:1px solid black;"></canvas>
+	</div>
+	
 	<script src="algorithms.js"></script>
+
+	
+	<script>
+		const toggleBtn = document.getElementById('toggleBtn');
+		const toggleDiv = document.getElementById('toggleDiv');
+		toggleBtn.addEventListener('click', () => {
+			toggleDiv.classList.toggle('hidden');
+			if (toggleBtn.textContent === 'Directions ausblenden') {
+				toggleBtn.textContent = 'Directions anzeigen';
+			} else {
+				toggleBtn.textContent = 'Directions ausblenden';
+			}
+		});
+	</script>
+
 </body>
 </html>
