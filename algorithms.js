@@ -467,18 +467,19 @@ class Graph{
         const diagonalAboveRight = [(x+1),(y-1)]
         const oben = [x,(y-1)]
         const unten =[x,(y+1)]       
-        adjacentNode.push(rechts)
+        adjacentNode.push(oben)
         //adjacentNode.push(diagonalUnderRight)
         //adjacentNode.push(diagonalAboveLeft)
-        adjacentNode.push(links)
-        adjacentNode.push(oben)
+        adjacentNode.push(rechts)
         adjacentNode.push(unten)
+        adjacentNode.push(links)
         let val = adjacentNode.filter(val => val[0] >= 0 && val[0] < this.xAchse && val[1] >= 0 && val[1] < this.yAchse)    
         
         let start  = new Node(x,y)
 
         let edgeList = []
         val.forEach(indexVal => {
+            console.log(indexVal)
             let end = new Node(indexVal[0],indexVal[1])   
             let edge = new Edge(start,end, this.euclideanDistance(end,this.target))
             edgeList.push(edge)
