@@ -5,14 +5,14 @@ let YELLOW = "yellow"
 let RED = "red"
 let GREEN = "green"
 
-let SPEED = 200
+let SPEED = 100
 
 /**
  * Nächste aufgabe wenn ein feld schon bereits grün oder rot ist soll ich es nicht mit schwarz übermalen können!
  */
 
-let RECTWIDTH = 40
-let RECTHEIGHT = 40
+let RECTWIDTH = 60
+let RECTHEIGHT = 60
 /**
  * Canvas - all settings for Canvas
  */
@@ -468,18 +468,20 @@ class Graph{
         const oben = [x,(y-1)]
         const unten =[x,(y+1)]       
         adjacentNode.push(oben)
-        //adjacentNode.push(diagonalUnderRight)
-        //adjacentNode.push(diagonalAboveLeft)
+        
         adjacentNode.push(rechts)
+        //adjacentNode.push(diagonalUnderRight)
+        
         adjacentNode.push(unten)
         adjacentNode.push(links)
+        //adjacentNode.push(diagonalAboveLeft)
         let val = adjacentNode.filter(val => val[0] >= 0 && val[0] < this.xAchse && val[1] >= 0 && val[1] < this.yAchse)    
         
         let start  = new Node(x,y)
 
         let edgeList = []
         val.forEach(indexVal => {
-            console.log(indexVal)
+          
             let end = new Node(indexVal[0],indexVal[1])   
             let edge = new Edge(start,end, this.euclideanDistance(end,this.target))
             edgeList.push(edge)
@@ -499,59 +501,7 @@ class Graph{
         return false
     }
 
-    async astar(start, target){
-        let openList = new PriorityQueue()
-        let openListId = []
-        let closedList = []
-        openList.push(start, 0)
-        openListId.push(start.x + "_" + start.y)
-        this.setGCost(start.x,start.y, 0)
     
-        while(!openList.isEmpty()){
-            let current = openList.dePop().node
-            this.removeValueFromArray(openListId, current.x + "_" + current.y)
-            closedList.push(current.x + "_" + current.y)
-            if(!this.isEqual(this.start,current)){
-                c.changeRectangleColor(current.x,current.y, "blue")
-                await this.sleep(200)
-            }
-          
-            if(this.isEqual(current,target)){
-                return []
-            }
-    
-            const adjacent = this.getAdjacent(current.x,current.y)
-            for(let i = 0;i < adjacent.length;i++){
-                let neighbour = adjacent[i].end
-                if(closedList.includes(neighbour.x + "_" + neighbour.y) || this.checkWall(neighbour)){
-                    continue
-                }
-    
-                let tentative_gSCore = this.getGCost(current.x, current.y) + this.distanceBetween(current,neighbour)
-    
-                let tentativeBetter
-                if(!openListId.includes(neighbour.x + "_" + neighbour.y)){
-                    openList.push(neighbour)
-                    openListId.push(neighbour.x + "_"+ neighbour.y)
-                    tentativeBetter = true
-                }else if(tentative_gSCore < this.getGCost(neighbour.x,neighbour.y)){
-                    tentativeBetter = true
-                }else {
-                    tentativeBetter = false
-                }
-    
-                if(tentativeBetter){
-                    this.setGCost(neighbour.x,neighbour.y,tentative_gSCore)
-                    this.setHeuristic(neighbour.x,neighbour.y, this.heuristic(neighbour,target))
-                    let fcost = (this.getGCost(neighbour.x,neighbour.y) + this.getHeuristic(neighbour.x,neighbour.y))
-                    this.setfScore(neighbour.x,neighbour.y,fcost)
-                    
-                }
-            }
-    
-        }
-        return null
-    }
     sleep(ms){
         return new Promise(resolve => setTimeout(resolve,ms))
     }
@@ -585,54 +535,6 @@ class Graph{
         }
         return arr;
     }
-
-
-    
-
-/*
-    async astar(start, target){
-        let openList = new PriorityQueue()
-        let openListId = []
-        let closedList = []
-        openList.push(start, 0)
-        openListId.push(start.x + "_" + start.y)
-        this.setGCost(start.x,start.y, 0)
-    
-        while(!openList.isEmpty()){
-            let current = openList.dePop().node
-            this.removeValueFromArray(openListId, current.x + "_" + current.y)
-            closedList.push(current.x + "_" + current.y)
-            c.changeRectangleColor(current.x,current.y, "blue")
-            await this.sleep(200)
-            if(this.isEqual(current,target)){
-                return []
-            }
-    
-            const adjacent = this.getAdjacent(current.x,current.y)
-            let ad = new PriorityQueue()
-            for(let i = 0;i < adjacent.length;i++){
-                let neighbour = adjacent[i].end
-                if(closedList.includes(neighbour.x + "_" + neighbour.y)){
-                    continue
-                }
-                if(!this.checkWall(neighbour)){
-                    ad.push(neighbour, this.getfScore(neighbour.x,neighbour.y))
-                }
-                
-            }
-
-            let neighbour = ad.dePop().node
-                if(!openListId.includes(neighbour.x + "_" + neighbour.y)){
-
-                    openList.push(neighbour)
-                    openListId.push(neighbour.x + "_"+ neighbour.y)
-                    
-                }            
-    
-        }
-        return null
-    }*/
-
   
     async dfs(start, target) {
         if (this.isEqual(start,target)) {
@@ -683,7 +585,7 @@ class Graph{
                             current = parents[current.x + "_" + current.y]
                         }
                         path.unshift(start)
-                        console.log(path)
+                       
                         path.pop()
                         return path;
                     }
@@ -700,7 +602,6 @@ class Graph{
     }
 
     async ucs(start, target) {
-        console.log("HIE")
         let queue = new PriorityQueue();
         let startId = start.x + "_" + start.y;
 
@@ -742,6 +643,72 @@ class Graph{
           }
         }
     }
+
+    async astar(start, target){
+        let openList = new PriorityQueue()
+        let openListId = []
+        let closedList = []
+        openList.push(start, 0)
+        openListId.push(start.x + "_" + start.y)
+        this.setGCost(start.x,start.y, 0)
+        start.parent = null 
+        
+        while(!openList.isEmpty()){
+            let current = openList.dePop().node
+            this.removeValueFromArray(openListId, current.x + "_" + current.y)
+            closedList.push(current.x + "_" + current.y)
+            if(!this.isEqual(this.start,current) && !this.isEqual(target,current)){
+                c.changeRectangleColor(current.x,current.y, "blue")
+                await this.sleep(SPEED)
+            }
+          
+            if(this.isEqual(current,target)){
+              
+                let path = [current]
+                let parent = current.parent
+                while (parent !== null) {
+                    path.unshift(parent)
+                    parent = parent.parent
+                }
+                
+                return path
+            }
+    
+            const adjacent = this.getAdjacent(current.x,current.y)
+            for(let i = 0;i < adjacent.length;i++){
+                let neighbour = adjacent[i].end
+                if(closedList.includes(neighbour.x + "_" + neighbour.y) || this.checkWall(neighbour)){
+                    continue
+                }
+    
+                let tentative_gSCore = this.getGCost(current.x, current.y) + this.distanceBetween(current,neighbour)
+    
+                let tentativeBetter
+                if(!openListId.includes(neighbour.x + "_" + neighbour.y)){
+                    openList.push(neighbour)
+                    openListId.push(neighbour.x + "_"+ neighbour.y)
+                    neighbour.parent = current 
+                }else if(tentative_gSCore < this.getGCost(neighbour.x,neighbour.y)){
+                    neighbour.parent = current 
+                    tentativeBetter = true
+                }else {
+                    tentativeBetter = false
+                }
+    
+                if(tentativeBetter){
+                    this.setGCost(neighbour.x,neighbour.y,tentative_gSCore)
+                    this.setHeuristic(neighbour.x,neighbour.y, this.heuristic(neighbour,target))
+                    let fcost = (this.getGCost(neighbour.x,neighbour.y) + this.getHeuristic(neighbour.x,neighbour.y))
+                    this.setfScore(neighbour.x,neighbour.y,fcost)
+                    
+                }
+            }
+    
+        }
+        return null // No path found
+    }
+    
+
 
 }
 
@@ -831,7 +798,7 @@ document.getElementById("start").addEventListener("click", async function(){
         g = new Graph(startNode, targetNode)
     
         var path = undefined
-        g.adjacentMatrix.forEach(val => console.log(val))
+        //g.adjacentMatrix.forEach(val => console.log(val))
         //Menü
         if(options.bfs){
             
