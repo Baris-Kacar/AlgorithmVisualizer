@@ -28,6 +28,7 @@
 						<option value="2">BFS</option>
 						<option value="3">UCS</option>
 						<option value="4">A*</option>
+						<option value="5">Dijkstra</option>
 					  </select>
 					</a>
 	  
@@ -88,14 +89,25 @@
 		  <button id="green" name="green" onclick="c.setColor(3)" class="px-4 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">GREEN</button>
 		  <button id="white" name="white" onclick="c.setColor(4)" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">WHITE</button>
 		</div>
-		<button id="start" name="start" class="ml-4 px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">START</button>
+	
+		<button id="start" name="start" class="ml-4 mr-4 px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">START</button>
+		<label for="resetBtn" class="mr-2 font-bold">Analyze :</label>
+		<div id="colors" class="inline-flex space-x-2">
+			<button id="heuristic" name="heuristic" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">HEURISTIC</button>
+			<button id="cost" name="cost" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">COST</button>
+			<button id="gcost" name="gcost" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">G-COST</button>
+			<button id="fcost" name="fcost" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">F-COST</button>
+		</div>
 		<br class="my-4">
 		
 		
 	  </div>
+
+	  
 	<br>
 	<div class="flex items-center justify-center mb-10">
-		<canvas id="canvas" width="1020" height="1000" style="border:1px solid black;"></canvas>
+		<canvas id="canvas" width="1020" height="1020" style="border:1px solid black;"></canvas>
+		
 	</div>
 	
 	<script src="algorithms.js"></script>
