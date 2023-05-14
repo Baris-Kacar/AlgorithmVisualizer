@@ -498,7 +498,6 @@ class Graph{
         this.adjacentWheights[y][x].g = val
         this.adjacentMatrix[y][x].set("g", val)
     }
-
     getAdjacent(x,y){
         return this.getNode(x,y).adjacent
     }
@@ -537,7 +536,6 @@ class Graph{
         node.adjacent = edgeList
         //console.log(node.adjacent)
     }
-
     checkWall(node){
         let walls = c.walls
         for(let i = 0;i < walls.length;i++){
@@ -547,9 +545,7 @@ class Graph{
             }
         }
         return false
-    }
-
-    
+    } 
     sleep(ms){
         return new Promise(resolve => setTimeout(resolve,ms))
     }
@@ -906,7 +902,7 @@ document.getElementById("heuristic").addEventListener("click",async function(){
             g = new Graph(startNode, targetNode)
         }
         c.analyzeHeuristicOrCost(startNode,targetNode,path)
-      
+        
         await g.showCostCanvas("h")
     }
 })
