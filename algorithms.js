@@ -422,21 +422,7 @@ class MouseEvents {
     }
 }
 
-class Node{
-    constructor(x,y){
-        this.x = x
-        this.y = y
-        this.adjacent = []
-    }
-}
 
-class Edge{
-    constructor(start,end, cost){
-        this.start = start
-        this.end = end
-        this.cost = cost
-    }
-}
 
 class Graph{
     constructor(start,target){
@@ -897,7 +883,21 @@ class PriorityQueue{
     }
  
 }
+class Node{
+    constructor(x,y){
+        this.x = x
+        this.y = y
+        this.adjacent = []
+    }
+}
 
+class Edge{
+    constructor(start,end, cost){
+        this.start = start
+        this.end = end
+        this.cost = cost
+    }
+}
 class Maze{
     constructor(canvas){
         this.walls = []
@@ -907,6 +907,8 @@ class Maze{
         this.xAchse = canvas.canvas.width / RECTWIDTH
         this.yAchse = canvas.canvas.height / RECTHEIGHT
         this.createAdjacentMatrix()
+        this.parent = []
+       
       
     }
     sleep(ms){
@@ -918,15 +920,29 @@ class Maze{
             let row = []
             for(let x = 0;x < this.xAchse;x++){
                const node = new Node(x,y)
+               const edges = []
                this.setAdjacent(x,y,node)
-               row.push(node)
+                for(let adjacent of node.adjacent){
+                    let adjNode = new Node(adjacent[0],adjacent[1])
+                    let edge = new Edge(node,adjNode,Math.floor(Math.random() * 20))
+
+                    edges.push(edge)
+                }
+                const arr = {
+                    node: node,
+                    edges: edges
+                }
+               row.push(arr)
             }
             this.adjacentMatrix.push(row)            
         }
     }
 
     getNode(x,y){
-        return this.adjacentMatrix[y][x]
+        return this.adjacentMatrix[y][x].node
+    }
+    getEdges(x,y){
+        return this.adjacentMatrix[y][x].edges
     }
 
     setAdjacent(x,y,node){       
@@ -943,6 +959,18 @@ class Maze{
 
     getAdjacent(x,y){
         return this.getNode(x,y).adjacent
+    }
+
+    getAllEdges(){
+        let edges = []
+        for(let y = 0;y < this.yAchse;y++){
+            for(let x = 0;x < this.xAchse;x++){
+                for(let ed of this.getEdges(x,y)){
+                    edges.push(ed)
+                }
+            }         
+        }
+        return edges
     }
 
     async randomizedDFS(node = new Node(0,0)){
@@ -970,7 +998,7 @@ class Maze{
                 const [x,y] = adjacent[i]
                 let neighbour = this.getNode(x,y)
                 if (!visited.includes(neighbour.x + "_" + neighbour.y)) {
-                    this.c.removeWallAndChangeColor(current.x, current.y, x, y);
+                    this.c.removeWallAndChangeColor(current.x, current.y);
                     await this.sleep(SPEED)
                     stack.push(neighbour);
                     visited.push(neighbour.x + "_" + neighbour.y)
@@ -979,6 +1007,74 @@ class Maze{
 
         }
   
+    }
+
+    sortEdges(edges){
+        return edges.sort((element , element2) =>  element.cost - element2.cost
+        )
+    }
+    MakeSet(node) {
+        this.parent[node.x + "_" + node.y] = node;
+      }
+      
+      find(parent, node) {
+        if (parent[node.x + "_" + node.y] === node) {
+          return node;
+        }
+        return this.find(parent, parent[node.x + "_" + node.y]);
+      }
+      
+      Union(start, end) {
+        let xRoot = this.find(this.parent, start);
+        let yRoot = this.find(this.parent, end);
+      
+        if (xRoot !== yRoot) {
+          this.parent[yRoot.x + "_" + yRoot.y] = xRoot;
+        }
+      }
+
+    async randomKruskal() {
+        let visited = [];
+        let edges = this.getAllEdges();
+        edges = this.sortEdges(edges);
+      
+        for (let i = 0; i < this.yAchse; i++) {
+            for (let j = 0; j < this.xAchse; j++) {
+                c.setWallAndChangeColor(j, i);
+            }
+        }
+    
+        for (let edg of edges) {
+            this.MakeSet(edg.start);
+            this.MakeSet(edg.end);
+        }
+    
+        for (let i = 0; i < edges.length; i++) {
+            let startNode = edges[i].start;
+            let endNode = edges[i].end;
+    
+            let start = this.find(this.parent, startNode);
+            let end = this.find(this.parent, endNode);
+    
+            if (start !== end) {
+                this.Union(start, end);
+                let endNodeId = endNode.x + "_" + endNode.y;
+                let startNodeId = startNode.x + "_" + startNode.y;
+                
+                if (!visited.includes(startNodeId) && !visited.includes(endNodeId)) {
+                   visited.push(startNodeId);
+                    visited.push(endNodeId);
+                    if (Math.random() < 0.85) { // verringert die wahrscheinlichkeit das mehr walls entfernt werden 
+                       
+                            this.c.removeWallAndChangeColor(startNode.x , startNode.y);
+                            this.c.removeWallAndChangeColor(endNode.x , endNode.y);
+                        
+                    }
+             
+               await this.sleep(SPEED);
+            }
+        }
+        }
     }
 
 }
@@ -991,7 +1087,7 @@ var cost = false
 var heuristic = false
 var path = undefined
 
-const maze = new Maze(c)
+var maze = new Maze(c)
 
 
 
@@ -1012,10 +1108,16 @@ function setOptionFalse(){
 }
 
 
-document.getElementById("chooseMaze").addEventListener("click", function(e){
+
+document.getElementById("chooseMaze").addEventListener("change", function(e){
     switch(e.target.value){
         case "1":
+            maze = new Maze(c)
             maze.randomizedDFS()
+            break
+        case "2":
+            maze = new Maze(c)
+            maze.randomKruskal()
             break
     }
 })

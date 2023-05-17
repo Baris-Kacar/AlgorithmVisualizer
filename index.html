@@ -33,9 +33,10 @@
 					</a>
 					<div class="ml-10 flex items-baseline space-x-4">
 						<a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
-						  <select id="chooseMaze" name="chooseMaze" class="text-white bg-gray-800" id="chooseAlgorithm" class="text-white">
+						  <select  id="chooseMaze" name="chooseMaze" class="text-white bg-gray-800" id="chooseAlgorithm" class="text-white">
 							<option value="0">ALGORITHMUS WÄHLEN ... </option>
 							<option value="1">DFS Labyrinth</option>
+							<option value="2">Kruskal Labyrinth</option>
 						  </select>
 						</a>
 				
@@ -112,8 +113,9 @@
 	  
 	<br>
 	<div class="flex items-center justify-center mb-10">
-		<canvas id="canvas" width="1020" height="1020" style="border:1px solid black;"></canvas>
-		
+		<div class="canvas-container">
+		<canvas id="canvas" width="1800" height="1020" style="border:1px solid black;"></canvas>
+		</div>
 	</div>
 	
 	<script src="algorithms.js"></script>
