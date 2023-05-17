@@ -31,10 +31,16 @@
 						<option value="5">Dijkstra</option>
 					  </select>
 					</a>
-	  
-					<a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"></a>
-	  
+					<div class="ml-10 flex items-baseline space-x-4">
+						<a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
+						  <select id="chooseMaze" name="chooseMaze" class="text-white bg-gray-800" id="chooseAlgorithm" class="text-white">
+							<option value="0">ALGORITHMUS WÄHLEN ... </option>
+							<option value="1">DFS Labyrinth</option>
+						  </select>
+						</a>
+				
 				  </div>
+				  
 				</div>
 			  </div>
 			  <div class="-mr-2 flex md:hidden">
@@ -82,6 +88,7 @@
 	<div class="bg-gray-800 text-white px-8 py-6 rounded-lg shadow-md m-5">
 		<label for="resetBtn" class="mr-2 font-bold">Options:</label>
 		<button id="resetBtn" onclick="c.resetCanvas()" name="resetBtn" type="button" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Reset Graph</button>
+		<button id="resetBtn" onclick="c.resetJustWalls()" name="resetBtn" type="button" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Reset Walls</button>
 		<label for="colors" class="ml-4 mr-2 font-bold">COLORS:</label>
 		<div id="colors" class="inline-flex space-x-2">
 		  <button id="red" name="red" onclick="c.setColor(1)" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">RED</button>
@@ -93,10 +100,9 @@
 		<button id="start" name="start" class="ml-4 mr-4 px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">START</button>
 		<label for="resetBtn" class="mr-2 font-bold">Analyze :</label>
 		<div id="colors" class="inline-flex space-x-2">
-			<button id="heuristic" name="heuristic" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">HEURISTIC</button>
-			<button id="cost" name="cost" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">COST</button>
-			<button id="gcost" name="gcost" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">G-COST</button>
-			<button id="fcost" name="fcost" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">F-COST</button>
+			<button  name="heuristic" onclick="handler('h')" class=" px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">HEURISTIC</button>
+			<button  name="gcost" onclick="handler('g')"  class=" px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">G-COST</button>
+			<button  name="fcost" onclick="handler('f')"  class=" px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">F-COST</button>
 		</div>
 		<br class="my-4">
 		
