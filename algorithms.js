@@ -1113,7 +1113,19 @@ document.getElementById("start").addEventListener("click", async function(){
             g = new Graph(startNode, targetNode);
             path = await g.dijkstra(startNode, targetNode);
             g.printAlgorithm(path, targetNode);
-        }   
+        }  else{
+            let text = document.getElementById("failureText")
+            if (text.classList.contains("hidden")) {
+                text.classList.remove("hidden");
+              }
+              
+            text.innerHTML = "Please select an algorithm. Thank you!"
+            
+            setTimeout(function() {
+                text.classList.add("hidden");
+              }, 5000);
+        
+        }
 
     }else{
         let text = document.getElementById("failureText")
