@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Koordinatensystem</title>
+	<title>Algorithm Visualizer</title>
 	<script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body >
@@ -17,99 +17,130 @@
 						<img src="img/fire_logo.png" width="20px"><a class="text-white">&nbsp;VS&nbsp;</a>
 						<img src="img/drop.png" width="20px">
 					</div>
-				
-				</div>
-				<div class="hidden md:block">
-				  <div class="ml-10 flex items-baseline space-x-4">
+			</div>
+			<div class="hidden md:block">
+			  <div class="ml-10 flex items-baseline space-x-4">
+				<a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
+				  <select name="chooseAlgorithm" class="text-white bg-gray-800" id="chooseAlgorithm" class="text-white">
+					<option value="0">SELECT ALGORITHM ... </option>
+					<option value="1">DFS</option>
+					<option value="2">BFS</option>
+					<option value="3">UCS</option>
+					<option value="4">A*</option>
+					<option value="5">Dijkstra</option>
+				  </select>
+				</a>
+					<div class="ml-10 flex items-baseline space-x-4">
 					<a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
-					  <select name="chooseAlgorithm" class="text-white bg-gray-800" id="chooseAlgorithm" class="text-white">
-						<option value="0">ALGORITHMUS WÄHLEN ... </option>
-						<option value="1">DFS</option>
-						<option value="2">BFS</option>
-						<option value="3">UCS</option>
-						<option value="4">A*</option>
-						<option value="5">Dijkstra</option>
+					  <select  id="chooseMaze" name="chooseMaze" class="text-white bg-gray-800" id="chooseAlgorithm" class="text-white">
+						<option value="0">SELECT MAZE ... </option>
+						<option value="1">DFS Maze</option>
+						
 					  </select>
 					</a>
-					<div class="ml-10 flex items-baseline space-x-4">
-						<a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
-						  <select  id="chooseMaze" name="chooseMaze" class="text-white bg-gray-800" id="chooseAlgorithm" class="text-white">
-							<option value="0">ALGORITHMUS WÄHLEN ... </option>
-							<option value="1">DFS Labyrinth</option>
-							<!--<option value="2">Kruskal Labyrinth</option>
-							<option value="3">Prim Labyrinth</option>-->
-						  </select>
-						</a>
-				
-				  </div>
-				  
-				</div>
+			
 			  </div>
-			  <div class="-mr-2 flex md:hidden">
-				<!-- Hier könnte man den Mobile Menu Button platzieren -->
-			  </div>
+			  
 			</div>
 		  </div>
-		</nav>
+		</div>
 	  </div>
-	
-	<br><br>
+	</nav>
+  </div>
 
-	<div class="bg-gray-800 px-8 py-6 rounded-lg shadow-md mx-5 text-white">
-		<p class="text-lg font-bold mb-4">
-			ALAAAAAAARMMMMMMM!!!! 
-		</p>
-		<p class="mb-4">
-			Es war ein sonniger Tag in der Stadt, als plötzlich ein Notruf einging. Ein Haus stand in Flammen und die Feuerwehr musste schnell handeln, um Leben zu retten und das Feuer zu löschen. Die Feuerwehrleute eilten in ihre Fahrzeuge und starteten ihre Motoren, aber welcher Weg war der schnellste und sicherste?
-		</p>
-		<p class="mb-4">
-			Die Feuerwehr setzte einen Algorithmus ein, um den besten Weg zum brennenden Haus zu finden. Sie hatten verschiedene Algorithmen zur Auswahl, aber welcher war der beste? Können Sie den Algorithmus auswählen, der der Feuerwehr helfen wird, das Haus so schnell und sicher wie möglich zu erreichen?
-		</p>
-		<p class="font-bold">
-			Wählen Sie den richtigen Algorithmus, um die Feuerwehr dabei zu unterstützen, das brennende Haus so schnell wie möglich zu erreichen und Leben zu retten:
-		</p>
-		<button class="text-blue-500 hover:text-blue-700" id="toggleBtn">
-			Directions anzeigen
+<br><br>
+
+<div class="bg-gray-800 px-8 py-6 rounded-lg shadow-md mx-5 text-white">
+	<p class="text-lg font-bold mb-4">
+		ALAAAAAAARMMMMMMM!!!! 
+	</p>
+	<p class="mb-4">
+		It was a sunny day in the city when suddenly an emergency call came in. A house was on fire, and the fire department had to act quickly to save lives and extinguish the fire. The firefighters rushed to their vehicles and started their engines, but which route was the fastest and safest?
+	</p>
+	<p class="mb-4">
+		The fire department employed an algorithm to find the best route to the burning house. They had various algorithms to choose from, but which one was the best? Can you select the algorithm that will help the fire department reach the house as quickly and safely as possible?
+	</p>
+	<p class="font-bold">
+		Choose the correct algorithm to assist the fire department in reaching the burning house as quickly as possible and saving lives:
+	</p>
+	
+</div>
+
+
+	<div class="bg-gray-800 text-white px-8 py-6 rounded-lg shadow-md m-5">
+		<label for="resetBtn" class="mr-2 font-bold">Graph Options:</label>
+		<button id="resetBtn" onclick="c.resetCanvas()" name="resetBtn" type="button" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Reset Graph</button>
+		<button id="resetBtn" onclick="c.resetJustWalls()" name="resetBtn" type="button" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Reset Walls</button>
+		<label for="colors" class="ml-4 mr-2 font-bold">Button Options:</label>
+		<div id="colors" class="inline-flex space-x-2">
+		   <button id="green" name="green" onclick="c.setColor(3)" class="px-4 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">START</button>
+		  <button id="red" name="red" onclick="c.setColor(1)" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">TARGET</button>
+		  <button id="black" name="black" onclick="c.setColor(2)" class="px-4 py-2 bg-black text-white font-bold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">WALL</button>
+		  <button id="white" name="white" onclick="c.setColor(4)" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">DELETE WALL</button>
+		</div>
+		<label for="resetBtn" class="mr-2 ml-2 font-bold">BEGIN:</label>
+		<button id="start" name="start" class="ml-4 mr-4 px-4 py-2 bg-pink-500 text-white font-bold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50">EXECUTE</button>
+		<label for="resetBtn" class="mr-2 font-bold">Analyze:</label>
+		<div id="colors" class="inline-flex space-x-2">
+			<button  name="heuristic" onclick="handler('h')" class=" px-4 py-2 bg-orange-400 text-black font-bold rounded-md hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">HEURISTIC</button>
+			<button  name="gcost" onclick="handler('g')"  class=" px-4 py-2 bg-orange-400  text-black font-bold rounded-md hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">G-COST</button>
+			<button  name="fcost" onclick="handler('f')"  class=" px-4 py-2 bg-orange-400  text-black font-bold rounded-md hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">F-COST</button>
+		</div>
+		<br>
+		<label for="resetBtn" class="mr-2 font-bold">Additional:</label>
+		<button class="ml-4 mt-4 mr-4 px-4 py-2 bg-pink-500 text-white font-bold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50" id="toggleBtn">
+			Show
 		</button>
-		<div class="hidden" id="toggleDiv">
-			<div class="bg-gray-800  px-8 py-6 rounded-lg shadow-md">
-				<h2 class="text-xl font-bold mb-2">Field Selection</h2>
+		
+		<div class="hidden mt-4" id="toggleDiv">
+			<div class="bg-gray-700  px-8 py-6 rounded-lg shadow-md">
+				<h2 class="text-lg font-bold mb-2">GRAPH OPTIONS:</h2>
+				<ul class="list-disc pl-5">
+					<li class="text-red-600 font-medium">Reset Graph: This function resets the entire graph by restoring all fields to their initial state. This means that all start, target, and unvisited fields are cleared, and the graph is ready to be reconfigured.</li>
+					<li class="text-red-600 font-medium">Reset Walls: This function specifically resets the walls in the graph, while leaving the start, target, and unvisited fields unchanged. By resetting the walls, any previously placed obstacles or barriers are removed, allowing the graph to be reconfigured with new walls. </li>
+				</ul>
+				<br>
+				<h2 class="text-lg font-bold mb-2">BUTTON OPTIONS:</h2>
+				<ul class="list-disc pl-5">
+					<li class="text-green-600 font-medium">Start (Green Button): Choose this color to set the next selected node as the starting node.</li>
+					<li class="text-red-600 font-medium">Target (Red Button): Choose this color to set the next selected node as the target node.</li>
+					<li class="text-black font-medium">Wall (Black Button): Choose this color to set the next selected node as an obstacle (wall).</li>
+					<li class="text-white font-medium">DELETE WALL (White Button): Choose this color to set the next selected node as an unvisited node or do delete wall.</li>
+				</ul>
+				<br>
+				<h2 class="text-lg font-bold mb-2">BEGIN:</h2>
+				<ul class="list-disc pl-5">
+					<li class="text-pink-600 font-medium">Execute: Start the execution of the pathfinding algorithm.</li>
+				</ul>
+				<br>
+				<h2 class="text-lg font-bold mb-2">ANALYZE:</h2>
+				<ul class="list-disc pl-5">
+					<li class="text-orange-400 font-medium">Heuristic: Analyze the impact of the heuristic on the algorithm.</li>
+					<li class="text-orange-400 font-medium">G-Cost: Analyze the impact of the G-cost on the algorithm.</li>
+					<li class="text-orange-400 font-medium">F-Cost: Analyze the impact of the F-cost on the algorithm.</li>
+				</ul>
+				<br>
+				<h2 class="text-lg font-bold mb-2">FIELD SELECTION:</h2>
 				<ul class="list-disc pl-5">
 					<li>Choose fields by left-clicking</li>
 					<li>Delete chosen fields by right-clicking</li>
-					<li class="text-green-600 font-medium">Green: Start Node</li>
-					<li class="text-red-600 font-medium">Red: Target Node</li>
-					<li class="text-white font-medium">White: Unvisited Node</li>
-					<li class="text-black font-medium">Black: Wall Node</li>
-					<li class="text-yellow-600 font-medium">Yellow: Shortest Path Node</li>
+				</ul>
+				<br>
+		
+				<h2 class="text-lg font-bold mb-2">ADDITIONAL INFORMATION:</h2>
+				<ul class="list-disc pl-5">
+					<li class="text-yellow-600 font-medium">Yellow: Path Node</li>
+					<li class="text-blue-600 font-medium">Blue: Expanded Node</li>
 				</ul>
 			</div>
 		</div>
-	</div>
-
-	<div class="bg-gray-800 text-white px-8 py-6 rounded-lg shadow-md m-5">
-		<label for="resetBtn" class="mr-2 font-bold">Options:</label>
-		<button id="resetBtn" onclick="c.resetCanvas()" name="resetBtn" type="button" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Reset Graph</button>
-		<button id="resetBtn" onclick="c.resetJustWalls()" name="resetBtn" type="button" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Reset Walls</button>
-		<label for="colors" class="ml-4 mr-2 font-bold">COLORS:</label>
-		<div id="colors" class="inline-flex space-x-2">
-		  <button id="red" name="red" onclick="c.setColor(1)" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">RED</button>
-		  <button id="black" name="black" onclick="c.setColor(2)" class="px-4 py-2 bg-black text-white font-bold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">BLACK</button>
-		  <button id="green" name="green" onclick="c.setColor(3)" class="px-4 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">GREEN</button>
-		  <button id="white" name="white" onclick="c.setColor(4)" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">WHITE</button>
-		</div>
-	
-		<button id="start" name="start" class="ml-4 mr-4 px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">START</button>
-		<label for="resetBtn" class="mr-2 font-bold">Analyze :</label>
-		<div id="colors" class="inline-flex space-x-2">
-			<button  name="heuristic" onclick="handler('h')" class=" px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">HEURISTIC</button>
-			<button  name="gcost" onclick="handler('g')"  class=" px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">G-COST</button>
-			<button  name="fcost" onclick="handler('f')"  class=" px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">F-COST</button>
-		</div>
 		<br class="my-4">
-		
-		
 	  </div>
+	
+
+
+	  <div id="failureText" class="bg-red-500 text-white px-4 py-2 rounded-md mt-4 hidden mx-auto" style="width: 900px;"></div>
+
 
 	  
 	<br>
@@ -127,10 +158,10 @@
 		const toggleDiv = document.getElementById('toggleDiv');
 		toggleBtn.addEventListener('click', () => {
 			toggleDiv.classList.toggle('hidden');
-			if (toggleBtn.textContent === 'Directions ausblenden') {
-				toggleBtn.textContent = 'Directions anzeigen';
+			if (toggleBtn.textContent === 'HIDE') {
+				toggleBtn.textContent = 'SHOW ';
 			} else {
-				toggleBtn.textContent = 'Directions ausblenden';
+				toggleBtn.textContent = 'HIDE';
 			}
 		});
 	</script>

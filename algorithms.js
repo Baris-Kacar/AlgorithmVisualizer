@@ -7,15 +7,9 @@ let GREEN = "green"
 
 let SPEED = 100
 
-/**
- * Nächste aufgabe wenn ein feld schon bereits grün oder rot ist soll ich es nicht mit schwarz übermalen können!
- */
-
 let RECTWIDTH = 60
 let RECTHEIGHT = 60
-/**
- * Canvas - all settings for Canvas
- */
+
 class Canvas{
     constructor(rectWidth = 20,rectHeight = 20,dimension = "2d", id ="canvas"){
         this.canvas = document.getElementById(id)
@@ -57,7 +51,7 @@ class Canvas{
         if(color != undefined){
             this.color = color
         }
-        // um die richtigen koordinaten zu kriegen x*= this.rectWitdh
+    
         this.ctx.fillStyle = this.color
         x *= this.rectWidth
         y *= this.rectWidth
@@ -65,14 +59,14 @@ class Canvas{
         this.ctx.stroke()
     }
     writeText(x, y, val) {
-        // Text in Rechteck einfügen
+        
         x *= this.rectWidth;
         y *= this.rectHeight;
         c.ctx.fillStyle = 'black';
         c.ctx.font = '10px Arial';
         c.ctx.textAlign = 'center';
         c.ctx.textBaseline = 'middle';
-        const textWidth = c.ctx.measureText(val).width; // Breite des Textes
+        const textWidth = c.ctx.measureText(val).width;
         c.ctx.fillText(val, x + this.rectWidth / 2, y + this.rectHeight / 2, textWidth);
     }
 
@@ -106,7 +100,7 @@ class Canvas{
         image.onload = () => {
             x *= this.rectWidth
             y *= this.rectWidth
-            // x+ RECTWIDTH / 4 = damit es zentriert wird
+           
             this.ctx.drawImage(image, x +(RECTWIDTH / 4), y+ (RECTWIDTH / 4),RECTWIDTH / 2 ,RECTWIDTH / 2)
             this.draw()
         };
@@ -185,7 +179,7 @@ class Canvas{
             const index = this.walls.findIndex(obj => obj.x === wallCoordinates.x && obj.y === wallCoordinates.y);
             if (index !== -1) {
                 this.walls.splice(index, 1);
-                //console.log(this.walls);
+              
             }
         }
     }
@@ -287,9 +281,7 @@ class Canvas{
     }
 
 }
-/**
- * MouseEvents - class to handle events 
- */
+
 class MouseEvents {
     constructor(obj){
         this.isLeftClick = false
@@ -298,19 +290,13 @@ class MouseEvents {
         this.isRightClick = false
         this.isMouseDown = false
         this.obj = obj
-        
-        /**
-         * case when mousedown - 
-         * if left button clicked then isLeftClick equal true
-         * if right button clicked then isRightClick equal true
-         * isMouseDown will be direct settet to true
-         */
+      
         this.obj.canvas.addEventListener("mousedown", function(e){
             this.isMouseDown = true
-            if(e.button === 0){ //loft click
+            if(e.button === 0){
                 this.isLeftClick = true
             }
-            else if(e.button === 2){ // right click
+            else if(e.button === 2){ 
                 this.isRightClick = true    
             }
         }.bind(this))
@@ -335,7 +321,7 @@ class MouseEvents {
         }.bind(this))
         
         this.obj.canvas.addEventListener("mousemove", function(e){
-            //console.log(this.isMouseMove + " " + this.isLeftClick + " " + this.isMouseDown + " " + !this.isMouseUp)
+       
             if(this.isLeftClick && this.isMouseDown && this.isMouseMove && !this.isMouseUp){
                 const map = this.obj.getCoordinates(e)
                 const x = map.get("x")
@@ -345,7 +331,7 @@ class MouseEvents {
                 this.obj.resetTarget(x,y)
 
                 if(this.obj.color == BLACK || this.obj.color == WHITE){
-                    //console.log(this.obj.checkFieldBeforeDrawing(x,y))
+                   
                     this.obj.setWall(x,y)
                     this.obj.delWallElement(x,y)
                     this.obj.changeRectangleColor(x,y)        
@@ -379,10 +365,10 @@ class MouseEvents {
             const map = this.obj.getCoordinates(e)
             const x = map.get("x")
             const y = map.get("y")
-            //console.log(`x: ${x}, y: ${y}`)
+           
             this.obj.resetStart(x,y)
             this.obj.resetTarget(x,y)
-            //CHECKS IF START AND TARGET IS ALREADY SETTET
+     
             if(this.obj.start == undefined && this.obj.color == GREEN ){
                 this.obj.changeRectangleColor(x, y)
                 this.obj.setStart(x,y) 
@@ -405,10 +391,11 @@ class MouseEvents {
             const map = obj.getCoordinates(e)
             const x = map.get("x")
             const y = map.get("y")
-            //console.log(`x: ${x}, y: ${y}`)
+           
+            
             const color = this.obj.color 
             
-            //IF DELETE TARGET THE ATTRIBUTE WILL BE SETTET TO UNDEFINED TO GET LATER A NEW START OR TARGET
+
             this.obj.resetStart(x,y)
             this.obj.resetTarget(x,y)
 
@@ -439,7 +426,7 @@ class Graph{
     createAdjacentMatrix(){
         for(let y = 0;y < this.yAchse;y++){
             let row = []
-            let costs = [] // new
+            let costs = [] 
             for(let x = 0;x < this.xAchse;x++){
                 let map = new Map()
                 let node = new Node(x,y)
@@ -458,17 +445,17 @@ class Graph{
                 map.set("f",f)
                 row.push(map)
 
-                costs.push({x,y,cost,h,g,f}) // new
+                costs.push({x,y,cost,h,g,f})
             }
             this.adjacentMatrix.push(row)
             this.adjacentWheights.push(costs)
             
         }
-        //console.log(this.adjacentMatrix)
+    
     }
 
     euclideanDistance(node, target){
-        //  distance from between current node and target node
+     
         const xPosition = node.x
         const yPosition = node.y
         const xTarget = target.x
@@ -560,7 +547,8 @@ class Graph{
             edgeList.push(edge)
         })
         node.adjacent = edgeList
-        //console.log(node.adjacent)
+      
+    
     }
     checkWall(node){
         let walls = c.walls
@@ -722,7 +710,7 @@ class Graph{
           
             if (!this.visited.includes(neighbourId)  && !this.checkWall(neighbour)) {
               let totalCost = neighbourCost + nodeCost;
-              this.setGCost(neighbour.x, neighbour.y, totalCost); // Kosten setzen
+              this.setGCost(neighbour.x, neighbour.y, totalCost); 
               queue.push(neighbour, totalCost);
               this.visited.push(neighbourId);
           
@@ -1003,7 +991,7 @@ class Maze{
             visited.push(current.x + "_" + current.y)
             
             const adjacent = this.getAdjacent(current.x,current.y)
-            console.log(adjacent)
+           
             adjacent.sort(() => Math.random() - 0.5); 
 
             for(let i = 0; i < adjacent.length; i++){
@@ -1020,151 +1008,7 @@ class Maze{
         }
   
     }
-/*
-    sortEdges(edges){
-        return edges.sort((element , element2) =>  element.cost - element2.cost
-        )
-    }
-    MakeSet(node) {
-        this.parent[node.x + "_" + node.y] = {
-            node: node,
-            rank: 0
-        };
-      }
-      
-    find(parent, node) {
-        if (parent[node.x + "_" + node.y].node.x === node.x && parent[node.x + "_" + node.y].node.y === node.y) {
-          return node;
-        }
-        return this.find(parent, parent[node.x + "_" + node.y].node);
-      }
-      
-    Union(start, end) {
-        let xRoot = this.find(this.parent, start);
-        let yRoot = this.find(this.parent, end);
-    
-        if (xRoot.x === yRoot.x && xRoot.y === yRoot.y) {
-            return;
-        }
-    
-        if (xRoot.rank < yRoot.rank) {
-            this.parent[xRoot.x + "_" + xRoot.y].node = yRoot;
-        } else if (xRoot.rank > yRoot.rank) {
-            this.parent[yRoot.x + "_" + yRoot.y].node = xRoot;
-        } else {
-            this.parent[yRoot.x + "_" + yRoot.y].node = xRoot;
-            xRoot.rank++;
-        }
-    }
 
-    async randomKruskal() {
-        let visited = [];
-        let edges = this.getAllEdges();
-        edges = this.sortEdges(edges);
-      
-        
-        this.setWalls()
-    
-        for (let edg of edges) {
-            this.MakeSet(edg.start);
-            this.MakeSet(edg.end);
-        }
-    
-        for (let i = 0; i < edges.length; i++) {
-            let startNode = edges[i].start;
-            let endNode = edges[i].end;
-    
-            let start = this.find(this.parent, startNode);
-            let end = this.find(this.parent, endNode);
-    
-            if (start !== end) {
-                this.Union(start, end);
-                let endNodeId = endNode.x + "_" + endNode.y;
-                let startNodeId = startNode.x + "_" + startNode.y;
-                
-                if (!visited.includes(startNodeId) && !visited.includes(endNodeId)) {
-                   visited.push(startNodeId);
-                    visited.push(endNodeId);    
-                  
-                    let tmp = startNode;
-                 
-                    
-                    if (Math.random() < 0.87) {
-                        if (
-                            this.checkWall(new Node(tmp.x + 1, tmp.y)) ||
-                            this.checkWall(new Node(tmp.x - 1, tmp.y)) ||
-                            this.checkWall(new Node(tmp.x, tmp.y + 1)) ||
-                            this.checkWall(new Node(tmp.x, tmp.y - 1))
-                        ) {
-                            // Erstelle vorübergehende Durchgänge, um den Pfad zu markieren
-                            this.c.removeWallAndChangeColor(startNode.x, startNode.y);
-                            this.c.removeWallAndChangeColor(endNode.x, endNode.y);
-                        } 
-                         if(
-                        !this.checkWall(new Node(tmp.x + 1, tmp.y)) &&
-                        !this.checkWall(new Node(tmp.x - 1, tmp.y)) &&
-                        !this.checkWall(new Node(tmp.x, tmp.y + 1)) &&
-                        !this.checkWall(new Node(tmp.x, tmp.y - 1)) &&
-                        (this.checkWall(new Node(tmp.x-1, tmp.y - 1)) && this.checkWall(new Node(tmp.x+1, tmp.y+ 1)) && this.checkWall(new Node(tmp.x-1, tmp.y+1) && this.checkWall(new Node(tmp.x+1, tmp.y- 1))) )
-                        ){
-                            this.c.removeWallAndChangeColor(startNode.x, startNode.y);
-                            this.c.removeWallAndChangeColor(endNode.x, endNode.y);
-                        }
-                    }
-
-                    
-                    if (Math.random() < 0.80) { // verringert die wahrscheinlichkeit das mehr walls entfernt werden 
-                       
-                            this.c.removeWallAndChangeColor(startNode.x , startNode.y);
-                            this.c.removeWallAndChangeColor(endNode.x , endNode.y);
-                        
-                    }
-
-              
-                    
-               //await this.sleep(SPEED);
-            }
-        }
-        }
-    }
-
-    async randomizedPrim(start = new Node(0,0)){
-       
-        let visited = []
-        let frontier = []
-        visited.push(start.x + "_" + start.y)
-        this.setWalls()
-        let adj = this.getAdjacent(start.x,start.y)
-
-        for(let i = 0;i<adj.length;i++){
-            let node = new Node(adj[i][0], adj[i][1])
-            frontier.push(node)
-        }
-       
-        while(frontier.length > 0){
-            let random = Math.floor(Math.random() * frontier.length) 
-            let neighbour = frontier[random]
-            frontier.splice(random,1)
-
-            if(!visited.includes(neighbour.x + "_" + neighbour.y)){
-                visited.push(neighbour.x + "_" + neighbour.y)
-                
-                for(let i = 0;i < frontier.length;i++){
-                    let neighbour2 = frontier[i]
-                    visited.push(neighbour2.x + "_" + neighbour2.y)
-                }
-                for(let i = 0;i < this.getAdjacent(neighbour.x,neighbour.y).length;i++){
-                    let neigOfNeigh = this.getAdjacent(neighbour.x,neighbour.y)
-                    let node = new Node( neigOfNeigh[i][0], neigOfNeigh[i][1])
-                    frontier.push(node)
-                }
-
-                this.c.removeWallAndChangeColor(neighbour.x , neighbour.y);
-                await this.sleep(100)
-            }
-        }
-    }
-    */
 }
 
 const c = new Canvas(RECTWIDTH, RECTHEIGHT);
@@ -1203,15 +1047,6 @@ document.getElementById("chooseMaze").addEventListener("click", function(e){
             maze = new Maze(c)
             maze.randomizedDFS()
             break
-        /*case "2":
-            maze = new Maze(c)
-            maze.randomKruskal()
-            break
-        case "3":
-            maze = new Maze(c)
-            maze.randomizedPrim()
-            break
-        */
     }
 })
 
@@ -1281,7 +1116,16 @@ document.getElementById("start").addEventListener("click", async function(){
         }   
 
     }else{
-        console.log("BITTE START UND ZIEL KNOTEN AUSWÄHLEN");
+        let text = document.getElementById("failureText")
+        if (text.classList.contains("hidden")) {
+            text.classList.remove("hidden");
+          }
+          
+        text.innerHTML = "Please select both the start and destination nodes. Without this information, we cannot calculate a route. Please mark on the map the point from which you want to start and the point you want to reach. Thank you!"
+        
+        setTimeout(function() {
+            text.classList.add("hidden");
+          }, 5000);
     }
 
 });
