@@ -7,24 +7,51 @@ let GREEN = "green"
 
 let SPEED = 100
 
-let RECTWIDTH = 60
-let RECTHEIGHT = 60
+
+
+var RECTWIDTH = 60
+var RECTHEIGHT = 60
 
 class Canvas{
-    constructor(rectWidth = 20,rectHeight = 20,dimension = "2d", id ="canvas"){
-        this.canvas = document.getElementById(id)
-        this.ctx = this.canvas.getContext(dimension)
-        this.rectWidth = rectWidth
-        this.rectHeight = rectHeight
-        this.stepX = rectWidth
-        this.stepY = rectHeight
-        this.color = WHITE
-
-        this.start = undefined
-        this.target = undefined
-        this.walls = []
+    constructor(rectWidth = 20, rectHeight = 20, dimension = "2d", id = "canvas") {
+        this.canvas = document.getElementById(id);
+        this.ctx = this.canvas.getContext(dimension);
+        this.rectWidth = Math.floor(rectWidth / 20) * 20;
+        this.rectHeight = Math.floor(rectHeight / 20) * 20;
+        this.stepX = rectWidth;
+        this.stepY = rectHeight;
+        this.color = WHITE;
       
-    }
+        this.start = undefined;
+        this.target = undefined;
+        this.walls = [];
+        window.addEventListener('resize', () => this.resizeCanvas());
+        this.resizeCanvas();
+        this.draw()
+      }
+
+    
+      resizeCanvas() {
+        const container = document.querySelector('.canvas-container');
+        const containerWidth = container.clientWidth;
+        const canvasRatio = RECTWIDTH / RECTHEIGHT; 
+
+        let canvasWidth = containerWidth;
+        let canvasHeight = canvasWidth / canvasRatio;
+      
+        canvasWidth = Math.floor(canvasWidth / RECTWIDTH) * RECTWIDTH;
+        canvasHeight = Math.floor(canvasHeight / RECTHEIGHT) * RECTHEIGHT;
+      
+        if (canvasHeight < RECTHEIGHT) {
+          canvasHeight = RECTHEIGHT;
+          canvasWidth = canvasHeight * canvasRatio;
+          canvasWidth = Math.floor(canvasWidth / RECTWIDTH) * RECTWIDTH;
+        }
+
+        this.canvas.width = canvasWidth;
+        this.canvas.height = canvasHeight;
+        this.draw();
+      }
     draw() {
         this.ctx.beginPath()
         for(let x = 0;x <= this.canvas.width; x += this.stepX ){
@@ -1041,40 +1068,52 @@ function setOptionFalse(){
 
 
 
-document.getElementById("chooseMaze").addEventListener("click", function(e){
-    switch(e.target.value){
+document.addEventListener("change", function(e) {
+    // Überprüfen, ob das Ereignis von einem der Dropdown-Menüs ausgelöst wurde
+    if (e.target.id === "chooseMaze" || e.target.id === "chooseAlgorithm") {
+      switch (e.target.value) {
         case "1":
-            maze = new Maze(c)
-            maze.randomizedDFS()
-            break
-    }
-})
-
-document.getElementById("chooseAlgorithm").addEventListener("click", function(e){
-    switch(e.target.value){
-        case "1":
-            setOptionFalse()
-            options.dfs = true
-            break
+          // Code für die Option "1" im Dropdown-Menü ausführen
+          if (e.target.id === "chooseMaze") {
+            maze = new Maze(c);
+            maze.randomizedDFS();
+          } else if (e.target.id === "chooseAlgorithm") {
+            setOptionFalse();
+            options.dfs = true;
+          }
+          break;
         case "2":
-            setOptionFalse()
-            options.bfs = true
-            break
+          // Code für die Option "2" im Dropdown-Menü ausführen
+          if (e.target.id === "chooseAlgorithm") {
+            setOptionFalse();
+            options.bfs = true;
+          }
+          break;
         case "3":
-          
-            setOptionFalse()
-            options.ucs = true
-            break
+          // Code für die Option "3" im Dropdown-Menü ausführen
+          if (e.target.id === "chooseAlgorithm") {
+            setOptionFalse();
+            options.ucs = true;
+          }
+          break;
         case "4":
-            setOptionFalse()
-            options.astar = true
-            break
+          // Code für die Option "4" im Dropdown-Menü ausführen
+          if (e.target.id === "chooseAlgorithm") {
+            setOptionFalse();
+            options.astar = true;
+          }
+          break;
         case "5":
-            setOptionFalse()
-            options.dijkstra = true
-            break
+          // Code für die Option "5" im Dropdown-Menü ausführen
+          if (e.target.id === "chooseAlgorithm") {
+            setOptionFalse();
+            options.dijkstra = true;
+          }
+          break;
+      }
     }
-})
+  });
+
 
 document.getElementById("start").addEventListener("click", async function(){
     let targetNode;
@@ -1160,6 +1199,17 @@ async function handler(type){
                 c.analyzeHeuristicOrCost(startNode,targetNode,path)    
                 await g.showCostCanvas("f")
             }
+        }else{
+            let text = document.getElementById("failureText")
+            if (text.classList.contains("hidden")) {
+                text.classList.remove("hidden");
+              }
+              
+            text.innerHTML = "Please select start and target. Thank you!"
+            
+            setTimeout(function() {
+                text.classList.add("hidden");
+              }, 5000);
         }
     
     }

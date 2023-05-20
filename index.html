@@ -4,6 +4,14 @@
 	<meta charset="utf-8">
 	<title>Algorithm Visualizer</title>
 	<script src="https://cdn.tailwindcss.com"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		@media (max-width: 640px) {
+			.canvas-container {
+				max-width: 100%;
+			}
+		}
+	</style>
 </head>
 <body >
 	<div class="container-fluid bg-gray-800">
@@ -48,11 +56,35 @@
 	</nav>
   </div>
 
-<br><br>
 
-<div class="bg-gray-800 px-8 py-6 rounded-lg shadow-md mx-5 text-white">
+  <div class="bg-gray-800 text-white px-8 py-6 rounded-lg shadow-md m-5 md:hidden">
+	<div class="flex items-center justify-center mb-10">
+	  <div class="w-full max-w-screen-lg">
+		<label class="text-white ml-1 mr-2">ALGORITHMS: </label>
+		<br><br>
+		<div class="flex items-center mb-4">
+		  <select name="chooseAlgorithm" class="text-white bg-gray-700 rounded-lg" id="chooseAlgorithm">
+			<option value="0" selected>SELECT ALGORITHM ...</option>
+			<option  value="1">DFS</option>
+			<option  value="2">BFS</option>
+			<option   value="3">UCS</option>
+			<option  value="4">A*</option>
+			<option   value="5">Dijkstra</option>
+		  </select>
+		</div>
+		<div class="flex items-center">
+		  <select id="chooseMaze" name="chooseMaze" class="text-white bg-gray-700 rounded-lg">
+			<option value="0">SELECT MAZE ...</option>
+			<option value="1">DFS Maze</option>
+		  </select>
+		</div>
+	  </div>
+	</div>
+  </div>
+  
+<div class="bg-gray-800 px-8 py-6 rounded-lg shadow-md mt-4 mx-5 text-white">
 	<p class="text-lg font-bold mb-4">
-		ALAAAAAAARMMMMMMM!!!! 
+		ALAAAAAAARMMMM!!!! 
 	</p>
 	<p class="mb-4">
 		It was a sunny day in the city when suddenly an emergency call came in. A house was on fire, and the fire department had to act quickly to save lives and extinguish the fire. The firefighters rushed to their vehicles and started their engines, but which route was the fastest and safest?
@@ -68,29 +100,40 @@
 
 
 	<div class="bg-gray-800 text-white px-8 py-6 rounded-lg shadow-md m-5">
-		<label for="resetBtn" class="mr-2 font-bold">Graph Options:</label>
-		<button id="resetBtn" onclick="c.resetCanvas()" name="resetBtn" type="button" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Reset Graph</button>
-		<button id="resetBtn" onclick="c.resetJustWalls()" name="resetBtn" type="button" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Reset Walls</button>
-		<label for="colors" class="ml-4 mr-2 font-bold">Button Options:</label>
-		<div id="colors" class="inline-flex space-x-2">
-		   <button id="green" name="green" onclick="c.setColor(3)" class="px-4 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">START</button>
-		  <button id="red" name="red" onclick="c.setColor(1)" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">TARGET</button>
-		  <button id="black" name="black" onclick="c.setColor(2)" class="px-4 py-2 bg-black text-white font-bold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">WALL</button>
-		  <button id="white" name="white" onclick="c.setColor(4)" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">DELETE WALL</button>
+		<div class="flex flex-wrap gap-2">
+				<label for="resetBtn" class="mr-2 font-bold">Graph Options:</label>
+						<button id="resetBtn" onclick="c.resetCanvas()" name="resetBtn" type="button" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Reset Graph</button>
+						<button id="resetBtn" onclick="c.resetJustWalls()" name="resetBtn" type="button" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Reset Walls</button>
+						
+						<div id="colors" class="flex flex-wrap gap-2">
+						<label for="colors" class="ml-4 mr-2 font-bold">Button Options:</label>
+						<button id="green" name="green" onclick="c.setColor(3)" class="px-4 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">START</button>
+						<button id="red" name="red" onclick="c.setColor(1)" class="px-4 py-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">TARGET</button>
+						<button id="black" name="black" onclick="c.setColor(2)" class="px-4 py-2 bg-black text-white font-bold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">WALL</button>
+						<button id="white" name="white" onclick="c.setColor(4)" class="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">DELETE WALL</button>
+						</div>
+						<div class="flex flex-wrap gap-2">
+						<label for="resetBtn" class="mr-2 ml-2 font-bold">BEGIN:</label>
+							<button id="start" name="start" class="ml-4 mr-4 px-4 py-2 bg-pink-500 text-white font-bold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50">EXECUTE</button>
+												
+						</div>
+						
+						<div id="colors" class="flex flex-wrap gap-2">
+							<label for="resetBtn" class="mr-2 font-bold">Analyze:</label>
+							<button  name="heuristic" onclick="handler('h')" class=" px-4 py-2 bg-orange-400 text-black font-bold rounded-md hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">HEURISTIC</button>
+							<button  name="gcost" onclick="handler('g')"  class=" px-4 py-2 bg-orange-400  text-black font-bold rounded-md hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">G-COST</button>
+							<button  name="fcost" onclick="handler('f')"  class=" px-4 py-2 bg-orange-400  text-black font-bold rounded-md hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">F-COST</button>
+						</div>
+						<br>
+						<div class="flex flex-wrap gap-2">
+							<label for="resetBtn" class="font-bold">Additional:</label>
+							<button class="ml-4 mt-4 mr-4 px-4 py-2 bg-pink-500 text-white font-bold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50" id="toggleBtn">
+								Show
+							</button>
+						</div>
+					
 		</div>
-		<label for="resetBtn" class="mr-2 ml-2 font-bold">BEGIN:</label>
-		<button id="start" name="start" class="ml-4 mr-4 px-4 py-2 bg-pink-500 text-white font-bold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50">EXECUTE</button>
-		<label for="resetBtn" class="mr-2 font-bold">Analyze:</label>
-		<div id="colors" class="inline-flex space-x-2">
-			<button  name="heuristic" onclick="handler('h')" class=" px-4 py-2 bg-orange-400 text-black font-bold rounded-md hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">HEURISTIC</button>
-			<button  name="gcost" onclick="handler('g')"  class=" px-4 py-2 bg-orange-400  text-black font-bold rounded-md hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">G-COST</button>
-			<button  name="fcost" onclick="handler('f')"  class=" px-4 py-2 bg-orange-400  text-black font-bold rounded-md hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">F-COST</button>
-		</div>
-		<br>
-		<label for="resetBtn" class="mr-2 font-bold">Additional:</label>
-		<button class="ml-4 mt-4 mr-4 px-4 py-2 bg-pink-500 text-white font-bold rounded-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50" id="toggleBtn">
-			Show
-		</button>
+		
 		
 		<div class="hidden mt-4" id="toggleDiv">
 			<div class="bg-gray-700  px-8 py-6 rounded-lg shadow-md">
@@ -139,16 +182,31 @@
 	
 
 
-	  <div id="failureText" class="bg-red-500 text-white px-4 py-2 rounded-md mt-4 hidden mx-auto" style="width: 900px;"></div>
+	  <div id="failureText" class="bg-red-500 text-white px-4 py-2 mr-5 rounded-md mt-4 ml-5  hidden mx-auto"></div>
 
 
 	  
 	<br>
-	<div class="flex items-center justify-center mb-10">
-		<div class="canvas-container">
-		<canvas id="canvas" width="1800" height="1020" style="border:1px solid black;"></canvas>
-		</div>
+
+
+<div class="ml-10 flex items-baseline space-x-4 ">
+	<a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 ">
+	  
+	</a>
+
+</div>
+
+
+	<div class="bg-white-200 text-white px-6 py-6 rounded-lg shadow-md ">
+		<div class="flex items-center justify-center mb-10">
+			<div class="canvas-container w-full max-w-screen-lg">
+			  <canvas id="canvas" style="border: 1px solid black;" class="w-full"></canvas>
+			</div>
+		  </div>
+
 	</div>
+
+
 	
 	<script src="algorithms.js"></script>
 
