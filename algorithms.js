@@ -1199,18 +1199,24 @@ async function handler(type){
                 c.analyzeHeuristicOrCost(startNode,targetNode,path)    
                 await g.showCostCanvas("f")
             }
-        }else{
+        }
+    }else{
             let text = document.getElementById("failureText")
             if (text.classList.contains("hidden")) {
                 text.classList.remove("hidden");
               }
-              
-            text.innerHTML = "Please select start and target. Thank you!"
+            
+            if(type == "h"){
+                text.innerHTML = "Please select start and target for heuristic. Thank you!"
+            }else if(type == "g"){
+                text.innerHTML = "Please select start and target for g-cost. Thank you!"
+            }else if(type == "f"){
+                text.innerHTML = "Please select start and target for f-cost. Thank you!"
+            }
+            
             
             setTimeout(function() {
                 text.classList.add("hidden");
               }, 5000);
         }
-    
-    }
 }
