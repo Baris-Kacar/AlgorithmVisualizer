@@ -25,13 +25,15 @@ class Canvas{
         this.start = undefined;
         this.target = undefined;
         this.walls = [];
-        window.addEventListener('resize', () => this.resizeCanvas());
+      
         this.resizeCanvas();
         this.draw()
       }
 
     
-      resizeCanvas() {
+      resizeCanvas() {    
+      
+
         const container = document.querySelector('.canvas-container');
         const containerWidth = container.clientWidth;
         const canvasRatio = RECTWIDTH / RECTHEIGHT; 
@@ -51,6 +53,11 @@ class Canvas{
         this.canvas.width = canvasWidth;
         this.canvas.height = canvasHeight;
         this.draw();
+
+        this.walls.forEach(el => {
+            this.changeRectangleColor(el.x,el.y,BLACK)
+        })
+        
       }
     draw() {
         this.ctx.beginPath()
@@ -1114,10 +1121,10 @@ document.addEventListener("change", function(e) {
     }
   });
 
-
+let targetNode;
+let startNode;
 document.getElementById("start").addEventListener("click", async function(){
-    let targetNode;
-    let startNode;
+  
 
     if(c.getTarget() != undefined && c.getStart() != undefined){
         c.draw();
@@ -1220,3 +1227,22 @@ async function handler(type){
               }, 5000);
         }
 }
+window.addEventListener('resize', () => {
+    c.resizeCanvas()
+    if(c.getStart() != undefined){
+
+    startNode = new Node(c.getStart().get("x"), c.getStart().get("y"));
+
+    if(startNode != undefined){
+    c.setStart(startNode.x,startNode.y)
+
+    }
+    }
+    if(c.getTarget() != undefined){
+        targetNode = new Node(c.getTarget().get("x"), c.getTarget().get("y"));
+ 
+    if(targetNode != undefined){   
+         c.setTarget(targetNode.x,targetNode.y)
+    }
+}
+});
